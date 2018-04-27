@@ -1,0 +1,6 @@
+[package]
+name = "load_intial_files"
+version = "0.1.0"
+authors = ["Tamby Kaghdo <tamby.kaghdo@gmail.com>"]
+
+[dependencies]
