@@ -38,17 +38,15 @@ pub fn dump_symbols_to_file(file_location: &str, file_name: &str, create_mode: &
 
 pub fn append_file(file_loc_name:String, symbols_vect:  Vec<std::ffi::OsString>) {
     //TODO
-    let mut file = OpenOptions::new()
-        .write(true)
-        .append(true)
-        .open(file_loc_name)
-        .unwrap();
+    //let mut file = OpenOptions::new()
+    //    .write(true)
+    //    .append(true)
+    //    .open(file_loc_name)
+    //    .unwrap();
 
     for i in symbols_vect {
         let symbol = extract_symbol(i);
-        if let Err(e) = writeln!(file, symbol) {
-            eprintln!("Couldn't write to file: {}", e);
-        }
+        fs::write(file_loc_name, symbol).expect("Unable to write data");
     }
     //for i in v {
     //    let symbol = extract_symbol(i);
