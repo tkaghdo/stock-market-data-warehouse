@@ -1,27 +1,68 @@
 use std::fs;
-//use std::fs::OpenOptions;
+use std::fs::OpenOptions;
 use std::io::prelude::*;
 use std::path::Path;
 use std::fs::File;
 use std::error::Error;
 
 fn main() {
-    //let files_location = String::from("../input_data/stocks/Test/");
-    //let v = get_names_of_symbol_files(&files_location);
+    let files_location = String::from("../input_data/stocks/Test/");
+    let v = get_names_of_symbol_files(&files_location);
+    let v2 = v.clone();
     //for i in v {
     //    let symbol = extract_symbol(i);
     //    println!("{}", symbol);
     //}
-    dump_symbols_to_file("../output_data/stocks/", "symbols.csv", "NEW");
+
+    let output_base_location = String::from("../output_data/stocks/");
+    let symbols_file_name = String::from("symbols.csv");
+
+    let file_create_mode = String::from("NEW");
+    dump_symbols_to_file(&output_base_location, &symbols_file_name, &file_create_mode, v);
+
+    let file_create_mode = String::from("APPEND");
+    dump_symbols_to_file(&output_base_location, &symbols_file_name, &file_create_mode, v2);
 }
 
-fn create_file(file_location:String, file_name:String, mode:String) {
-    let path = Path::new("../output_data/stocks/symbols.csv");
+
+
+pub fn dump_symbols_to_file(file_location: &str, file_name: &str, create_mode: &str, symbols_vect:  Vec<std::ffi::OsString>) {
+    let file = concat_strings(&file_location,&file_name);
+    if create_mode == "NEW" {
+        create_file(file);
+    }
+    else if create_mode == "APPEND" {
+        append_file(file, symbols_vect);
+    }
+}
+
+pub fn append_file(file_loc_name:String, symbols_vect:  Vec<std::ffi::OsString>) {
+    //TODO
+    let mut file = OpenOptions::new()
+        .write(true)
+        .append(true)
+        .open(file_loc_name)
+        .unwrap();
+
+    for i in symbols_vect {
+        let symbol = extract_symbol(i);
+        if let Err(e) = writeln!(file, symbol) {
+            eprintln!("Couldn't write to file: {}", e);
+        }
+    }
+    //for i in v {
+    //    let symbol = extract_symbol(i);
+    //    println!("{}", symbol);
+    //}
+}
+
+pub fn create_file(file_loc_name:String) {
+    let path = Path::new(&file_loc_name);
     let display = path.display();
 
-    let mut file = match File::create(&path) {
+    let _file = match File::create(&path) {
         Err(why) => panic!("couldn't create {}: {}", display, why.description()),
-        Ok(file) => file,
+        Ok(_file) => _file,
     };
 
 }
@@ -71,4 +112,9 @@ pub fn get_names_of_symbol_files(location: &str) -> Vec<std::ffi::OsString>{
         }
     }
     return v
+}
+
+pub fn concat_strings(a: &str, b: &str) -> String{
+    let c = [a, b].join("");
+    return c
 }
