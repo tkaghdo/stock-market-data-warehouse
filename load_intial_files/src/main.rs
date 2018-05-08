@@ -2,8 +2,11 @@ use std::fs;
 use std::io::Write;
 
 fn main() {
+
+    let stocks_folder_location = "../input_data/Stocks/";
+
     let mut f = fs::File::create("output.txt").expect("Unable to create file");
-    let data = get_names_of_symbol_files();
+    let data = get_names_of_symbol_files(&stocks_folder_location);
     for i in  data{
         //println!("{:?}", extract_symbol(i.symbol));
         let mut symbol = extract_symbol(i.symbol);
@@ -35,8 +38,8 @@ pub fn extract_symbol(file_name: String) -> String{
     return symbol
 }
 
-pub fn get_names_of_symbol_files() -> Vec<Company> {
-    let paths = fs::read_dir("../input_data/Stocks/Test/").unwrap();
+pub fn get_names_of_symbol_files(folder_location: &str) -> Vec<Company> {
+    let paths = fs::read_dir("../input_data/Stocks/").unwrap();
     let mut v = Vec::new();
     for path in paths {
         let mut str_file_name: String = path.unwrap().path().to_str().unwrap().to_string();

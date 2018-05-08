@@ -1,1 +1,2 @@
-input_data/
+load_intial_files/target/*
+load_intial_files/target/debug/
