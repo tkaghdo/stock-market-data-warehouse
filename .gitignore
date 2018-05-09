@@ -1,2 +1,3 @@
-load_intial_files/target/*
-load_intial_files/target/debug/
+/load_intial_files/target/
+/load_intial_files/target/debug/
+/target/
