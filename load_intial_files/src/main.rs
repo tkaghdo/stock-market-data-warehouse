@@ -7,17 +7,21 @@ fn main() {
     let stocks_folder_location = "../input_data/Stocks/";
     let symbol_file = "../output_data/stocks/symbols.csv";
     create_symbols_file(&stocks_folder_location, &symbol_file);
-
-    // TODO: generate an ID for each symbol in the symbols file
-
 }
 
 pub fn create_symbols_file(stocks_folder_location: &str, symbol_file: &str) {
 
     let mut f = fs::File::create(symbol_file).expect("Unable to create file");
     let data = get_names_of_symbol_files(&stocks_folder_location);
+    let mut id: i32 = 1000;
     for i in  data{
-        //println!("{:?}", extract_symbol(i.symbol));
+        //ID
+        id = id + 1;
+        let mut s: String = id.to_string();
+        f.write(s.as_bytes()).expect("Unable to write data");
+        //Separator
+        f.write(b",").expect("Unable to write data");
+        //Symbol
         let mut symbol = extract_symbol(i.symbol);
         f.write(symbol.as_bytes()).expect("Unable to write data");
         f.write(b"\n").expect("Unable to write data");
