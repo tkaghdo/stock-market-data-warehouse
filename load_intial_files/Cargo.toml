@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Tamby Kaghdo <tamby.kaghdo@gmail.com>"]
 
 [dependencies]
+postgres = "0.15"
