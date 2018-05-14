@@ -1,5 +1,8 @@
 use std::fs;
 use std::io::Write;
+use std::io::{BufReader,BufRead};
+use std::fs::File;
+
 //extern crate postgres;
 //use postgres::{Connection, TlsMode};
 
@@ -7,7 +10,7 @@ fn main() {
 
     // grab all the ticker names from stokcs files
     let stocks_folder_location = "../input_data/Stocks/";
-    //let symbol_file = "../output_data/stocks/symbols.csv";
+    let symbol_file = "../output_data/stocks/symbols.csv";
     //create_symbols_file(&stocks_folder_location, &symbol_file);
 
     // TODO: load symbols.csv into table DIM_COMPANY
@@ -23,21 +26,44 @@ fn main() {
     //                 lookup the date id
     //                 add the metrics to the record
     //                 spit the record to the file
-    loop_thru_stock_files(stocks_folder_location);
+    loop_thru_stock_files(stocks_folder_location, symbol_file);
 
 }
 
-pub fn loop_thru_stock_files(folder_location: &str) {
+pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
+    // load master list
+    populate_symbols_master_list(&symbol_file);
+    /*
     let paths = fs::read_dir(folder_location).unwrap();
     for path in paths {
         let mut str_file_name: String = path.unwrap().path().to_str().unwrap().to_string();
         let mut symbol = extract_symbol(str_file_name);
         println!("{}", symbol);
-        is_in_master_symbols_list(symbol);
+        //is_in_master_symbols_list(symbol);
+    }
+    */
+}
+
+/*
+pub fn is_in_master_symbols_list(symbol: &str) {
+
+}
+*/
+
+//TODO: You are here
+pub fn populate_symbols_master_list(symbol_file: &str) {
+    let file = File::open(symbol_file).unwrap();
+    for line in BufReader::new(file).lines() {
+        println!("{}", line.unwrap());
     }
 }
 
+pub struct Symbols_Struct {
+    symbol_id: String,
+    symbol_name: String,
+}
 
+/////////////
 pub fn create_symbols_file(stocks_folder_location: &str, symbol_file: &str) {
 
     let mut f = fs::File::create(symbol_file).expect("Unable to create file");
