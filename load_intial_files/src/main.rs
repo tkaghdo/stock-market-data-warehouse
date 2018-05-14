@@ -1,19 +1,42 @@
 use std::fs;
 use std::io::Write;
+//extern crate postgres;
+//use postgres::{Connection, TlsMode};
 
 fn main() {
 
     // grab all the ticker names from stokcs files
-    //let stocks_folder_location = "../input_data/Stocks/";
+    let stocks_folder_location = "../input_data/Stocks/";
     //let symbol_file = "../output_data/stocks/symbols.csv";
     //create_symbols_file(&stocks_folder_location, &symbol_file);
 
-    // fact day trade
+    // TODO: load symbols.csv into table DIM_COMPANY
+    //load_dim_company_table();
+
+    // TODO: fact day trade
     // for each file
     //      extract the symbol
     //      is it in the symbols.csv file?
+    //            NO: log
+    //            YES: build a record
+    //                 lookup the symbol id
+    //                 lookup the date id
+    //                 add the metrics to the record
+    //                 spit the record to the file
+    loop_thru_stock_files(stocks_folder_location);
 
 }
+
+pub fn loop_thru_stock_files(folder_location: &str) {
+    let paths = fs::read_dir(folder_location).unwrap();
+    for path in paths {
+        let mut str_file_name: String = path.unwrap().path().to_str().unwrap().to_string();
+        let mut symbol = extract_symbol(str_file_name);
+        println!("{}", symbol);
+        is_in_master_symbols_list(symbol);
+    }
+}
+
 
 pub fn create_symbols_file(stocks_folder_location: &str, symbol_file: &str) {
 
@@ -77,3 +100,14 @@ pub fn get_names_of_symbol_files(folder_location: &str) -> Vec<Company> {
 pub struct Company {
     symbol: String,
 }
+
+//http://zsiciarz.github.io/24daysofrust/book/vol1/day11.html
+//pub fn load_dim_company_table() {
+//    //postgresql://rust:rust@localhost/rust
+//    let conn = Connection::connect("postgresql://admin:Pineapple01@localhost/rose_quartz", TlsMode::None).unwrap();
+//    conn.execute("CREATE TABLE person (
+//                    id              SERIAL PRIMARY KEY,
+//                    name            VARCHAR NOT NULL,
+//                    data            BYTEA
+//                  )", &[]).unwrap();
+//}
