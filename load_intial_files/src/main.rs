@@ -52,13 +52,21 @@ pub fn is_in_master_symbols_list(symbol: &str) {
 
 //TODO: You are here
 pub fn populate_symbols_master_list(symbol_file: &str) {
+
     let file = File::open(symbol_file).unwrap();
     for line in BufReader::new(file).lines() {
-        println!("{}", line.unwrap());
+        let record: String = line.unwrap();
+        let record2:String = record.clone();
+        let first_comma_index = record.find(',').unwrap();
+        //let record2 = record;
+        let symbol_id: String = record2.chars().skip(0).take(first_comma_index).collect();
+        //let my_number:String = line.unwrap().split(',').collect();
+        //let v: Vec<&str> = my_number;
+        println!("{}", symbol_id);
     }
 }
 
-pub struct Symbols_Struct {
+pub struct SymbolsStruct {
     symbol_id: String,
     symbol_name: String,
 }
