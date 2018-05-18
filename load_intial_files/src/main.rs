@@ -34,22 +34,30 @@ pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
     // load master list
     let mut symbols_master_list = Vec::new();
     symbols_master_list = populate_symbols_master_list(&symbol_file);
-    /*
+
     let paths = fs::read_dir(folder_location).unwrap();
     for path in paths {
         let mut str_file_name: String = path.unwrap().path().to_str().unwrap().to_string();
         let mut symbol = extract_symbol(str_file_name);
-        println!("{}", symbol);
-        //is_in_master_symbols_list(symbol);
+        //println!("{}", symbol);
+        is_in_master_symbols_list(symbol, &symbols_master_list);
     }
-    */
-}
-
-/*
-pub fn is_in_master_symbols_list(symbol: &str) {
 
 }
-*/
+
+
+pub fn is_in_master_symbols_list(symbol: String, symbols_master_list: &Vec<SymbolsStruct>) {
+    for num in symbols_master_list.iter() {
+        println!("{}", num.symbol_id);
+        if num.symbol_id == symbol {
+            break;
+        }
+        else {
+            break;
+        }
+    }
+}
+
 
 //TODO: You are here
 pub fn populate_symbols_master_list(symbol_file: &str) -> Vec<SymbolsStruct> {
