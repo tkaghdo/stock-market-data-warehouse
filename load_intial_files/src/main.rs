@@ -9,7 +9,7 @@ use std::fs::File;
 fn main() {
 
     // grab all the ticker names from stokcs files
-    let stocks_folder_location = "../input_data/Stocks/";
+    let stocks_folder_location = "../input_data/Test/";
     let symbol_file = "../output_data/stocks/symbols.csv";
     //create_symbols_file(&stocks_folder_location, &symbol_file);
 
@@ -38,28 +38,24 @@ pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
     let paths = fs::read_dir(folder_location).unwrap();
     for path in paths {
         let mut str_file_name: String = path.unwrap().path().to_str().unwrap().to_string();
-        let mut symbol = extract_symbol(str_file_name);
-        //println!("{}", symbol);
-        is_in_master_symbols_list(symbol, &symbols_master_list);
+        let mut symbol_from_file = extract_symbol(str_file_name);
+        let mut found = false;
+        for element in symbols_master_list.iter() {
+            if symbol_from_file == element.symbol_name {
+                // current file contains trasactions to a valid company
+                println!("{} *** FOUND IT *** {}", symbol_from_file, element.symbol_name);
+                found = true;
+                break;
+            }
+        }
+        if found == false {
+            println!("{} ### DID NOT FIND IT IN THE MASTER FILE ###", symbol_from_file);
+            // TODO: log this
+        }
     }
 
 }
 
-
-pub fn is_in_master_symbols_list(symbol: String, symbols_master_list: &Vec<SymbolsStruct>) {
-    for num in symbols_master_list.iter() {
-        println!("{}", num.symbol_id);
-        if num.symbol_id == symbol {
-            break;
-        }
-        else {
-            break;
-        }
-    }
-}
-
-
-//TODO: You are here
 pub fn populate_symbols_master_list(symbol_file: &str) -> Vec<SymbolsStruct> {
     let file = File::open(symbol_file).unwrap();
     let mut v = Vec::new();
