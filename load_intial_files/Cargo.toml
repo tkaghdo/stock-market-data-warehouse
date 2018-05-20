@@ -4,3 +4,6 @@ version = "0.1.0"
 authors = ["Tamby Kaghdo <tamby.kaghdo@gmail.com>"]
 
 [dependencies]
+log = "0.4"
+env_logger = "0.5.10"
+log4rs = { version = "0.8.0", features = ["rolling_file_appender", "compound_policy", "size_trigger", "fixed_window_roller"] }
