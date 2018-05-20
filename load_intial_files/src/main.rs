@@ -3,10 +3,15 @@ use std::io::Write;
 use std::io::{BufReader,BufRead};
 use std::fs::File;
 
+#[macro_use]
+extern crate log;
+extern crate log4rs;
+
 //extern crate postgres;
 //use postgres::{Connection, TlsMode};
 
 fn main() {
+    log4rs::init_file("config/log4rs.yml", Default::default()).unwrap();
 
     // grab all the ticker names from stokcs files
     let stocks_folder_location = "../input_data/Test/";
@@ -49,8 +54,8 @@ pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
             }
         }
         if found == false {
-            println!("{} ### DID NOT FIND IT IN THE MASTER FILE ###", symbol_from_file);
-            // TODO: log this
+            println!("WARN - The symbol \"{}\" not found in master file \"{}\"", symbol_from_file, folder_location);
+            warn!("The symbol \"{}\" not found in master file \"{}\"", symbol_from_file, folder_location);
         }
     }
 

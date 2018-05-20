@@ -1,0 +1,7 @@
+2018-05-20T12:05:48.789509-04:00 INFO load_intial_files - INFO
+2018-05-20T12:05:48.791724-04:00 ERROR load_intial_files - error
+2018-05-20T14:28:55.250179-04:00 WARN load_intial_files - INFO
+2018-05-20T14:31:14.824239-04:00 WARN load_intial_files - The symbol AAON not found in master file ../input_data/Test/
+2018-05-20T14:31:57.137436-04:00 WARN load_intial_files - The symbol "AAON" not found in master file ../input_data/Test/
+2018-05-20T14:32:23.488653-04:00 WARN load_intial_files - The symbol "AAON" not found in master file "../input_data/Test/"
+2018-05-20T14:39:19.827569-04:00 WARN load_intial_files - The symbol "AAON" not found in master file "../input_data/Test/"
