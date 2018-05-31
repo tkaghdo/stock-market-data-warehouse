@@ -2,3 +2,5 @@
 /load_intial_files/target/debug/
 /target/
 /input_data/
+/output_data/stocks/*
+/output_data/stocks/
