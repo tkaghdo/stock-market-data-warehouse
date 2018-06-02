@@ -15,13 +15,15 @@ fn main() {
 
     // grab all the ticker names from stokcs files
     let stocks_folder_location = "../input_data/Stocks/";
+
+    //output the distinct symbols
     let symbol_file = "../output_data/stocks/symbols.csv";
-    //create_symbols_file(&stocks_folder_location, &symbol_file);
 
-    // TODO: load symbols.csv into table DIM_COMPANY
-    //load_dim_company_table();
+    println!("{:?}", "*** SYMBOL FILE CREATION STARTED ***");
+    create_symbols_file(&stocks_folder_location, &symbol_file);
+    println!("{:?}", "*** SYMBOL FILE CREATION ENDED ***\n\n");
 
-    // TODO: fact day trade
+    // fact day trade
     // for each file
     //      extract the symbol
     //      is it in the symbols.csv file?
@@ -31,13 +33,18 @@ fn main() {
     //                 lookup the date id
     //                 add the metrics to the record
     //                 spit the record to the file
-    loop_thru_stock_files(stocks_folder_location, symbol_file);
+    println!("{:?}", "*** FACT FILE CREATION STARTED ***");
+    let fact_file = "../output_data/stocks/company_fact.csv";
+    create_fact_file(stocks_folder_location, symbol_file, &fact_file);
+    println!("{:?}", "*** FACT FILE CREATION ENDED ***");
+    // TODO: load symbols.csv into table DIM_COMPANY
+    //load_dim_company_table();
 
 }
 
-pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
+pub fn create_fact_file(folder_location: &str, symbol_file: &str, fact_file: &str) {
     // load master list
-    let fact_file = "../output_data/stocks/company_fact.csv";
+    //let fact_file = "../output_data/stocks/company_fact.csv";
     let mut f = fs::File::create(fact_file).expect("Unable to create file");
 
     let mut symbols_master_list = Vec::new();
@@ -53,6 +60,8 @@ pub fn loop_thru_stock_files(folder_location: &str, symbol_file: &str) {
             for element in symbols_master_list.iter() {
                 if symbol_from_file == element.symbol_name {
                     // current file contains trasactions to a valid company
+                    println!("WORKIGN ON {}", symbol_from_file);
+                    info!("WORKIGN ON {}", symbol_from_file);
                     company_fact_records = construct_record(&str_file_name, &symbol_from_file, &element.symbol_id,  true);
                     found = true;
                     //TODO: dump contents of vector to a file one company at a time
@@ -115,8 +124,6 @@ pub fn construct_record(symbole_file_name: &str, name: &str, id: &str, skip_firs
                 open_int: extract_string_by_index(&record, 6),
             };
             v.push(comp_record);
-            //TODO: remove this break
-            //break;
         }
     }
     return v;
@@ -216,7 +223,6 @@ pub fn get_names_of_symbol_files(folder_location: &str) -> Vec<Company> {
         let mut comp = Company {
             symbol: str_file_name,
         };
-        //println!("Name: {}", str_file_name);
         v.push(comp);
     }
     return v
